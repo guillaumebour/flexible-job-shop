@@ -3,7 +3,6 @@
 # This script contains a high level overview of the proposed hybrid algorithm
 # The code is strictly mirroring the section 4.1 of the attached paper
 
-import config
 import parser
 import encoding
 import genetic
@@ -28,7 +27,7 @@ else:
         population = genetic.crossover(population, parameters)
         population = genetic.mutation (population, parameters)
 
-        gen = gen +1
+        gen = gen + 1
 
     # Termination Criteria Satisfied ?
-    print("Result found")
+
