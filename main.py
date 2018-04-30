@@ -8,6 +8,7 @@ import encoding
 import genetic
 import termination
 import sys
+import gantt
 
 # Beginning
 if len(sys.argv) != 2:
@@ -30,4 +31,5 @@ else:
         gen = gen + 1
 
     # Termination Criteria Satisfied ?
+
 
