@@ -1,0 +1,17 @@
+Python implementation of a genetic algorithm for FJSP.
+
+Based on the following paper:
+https://homepages.laas.fr/huguet/drupal/sites/homepages.laas.fr.huguet/files/u78/Li-Gao-2016.pdf
+
+The code has been designed to be read along the section 4 of this paper.
+
+4.1: Workflow of the proposed HA
+    main.py
+4.2: Encoding and decoding
+    encoding.py, decoding.py
+4.3: Genetic operators
+    genetic.py
+4.4: Local search by tabu search
+    This section has been ignored
+4.5: Terminate criteria
+    termination.py
