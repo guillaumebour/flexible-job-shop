@@ -138,11 +138,11 @@ def twoPointCrossover(p1, p2):
 
     offspring1 = p1
     if pos1 != pos2:
-        offspring1 = p1[:pos1] + p1[pos2:pos1:-1] + p1[pos2:]
+        offspring1 = p1[:pos1] + p2[pos1:pos2] + p1[pos2:]
 
     offspring2 = p2
     if pos1 != pos2:
-        offspring2 = p2[:pos1] + p2[pos2:pos1:-1] + p2[pos2:]
+        offspring2 = p2[:pos1] + p1[pos1:pos2] + p2[pos2:]
 
     return (offspring1, offspring2)
 
@@ -236,7 +236,7 @@ def halfMutation(p, parameters):
         for op in job:
             if i in positions:
                 randomMachine = random.randint(0, len(op)-1)
-                o[i] = op[randomMachine]['machine']
+                o[i] = randomMachine # op[randomMachine]['machine']
             i = i+1
 
     return o

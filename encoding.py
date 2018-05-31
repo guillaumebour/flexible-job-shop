@@ -26,7 +26,7 @@ def generateMS(parameters):
     for job in jobs:
         for op in job:
             randomMachine = random.randint(0, len(op)-1)
-            MS.append(op[randomMachine]['machine'])
+            MS.append(randomMachine)
 
     return MS
 

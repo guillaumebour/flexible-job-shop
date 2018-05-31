@@ -65,8 +65,9 @@ def decode(pb_instance, os, ms):
     # Iterating over OS to get task execution order and then checking in
     # MS to get the machine
     for job in os:
-        machine = ms_s[job][indexes[job]]
-        prcTime = get_processing_time(o[job][indexes[job]], machine)
+        index_machine = ms_s[job][indexes[job]]
+        machine = o[job][indexes[job]][index_machine]['machine']
+        prcTime = o[job][indexes[job]][index_machine]['processingTime']
         start_cstr = start_task_cstr[job]
 
         # Getting the first available place for the operation
