@@ -16,7 +16,6 @@ def get_processing_time(op_by_machine, machine_nb):
     for op in op_by_machine:
         if op['machine'] == machine_nb:
             return op['processingTime']
-
     print("[ERROR] Machine {} doesn't to be able to process this task.".format(machine_nb))
     sys.exit(-1)
 
@@ -66,20 +65,20 @@ def decode(pb_instance, os, ms):
     # Iterating over OS to get task execution order and then checking in
     # MS to get the machine
     for job in os:
-        machine = ms_s[job-1][indexes[job-1]]
-        prcTime = get_processing_time(o[job - 1][indexes[job-1]], machine)
-        start_cstr = start_task_cstr[job-1]
+        machine = ms_s[job][indexes[job]]
+        prcTime = get_processing_time(o[job][indexes[job]], machine)
+        start_cstr = start_task_cstr[job]
 
         # Getting the first available place for the operation
         start = find_first_available_place(start_cstr, prcTime, machine_operations[machine - 1])
-        name_task = "{}-{}".format(job, indexes[job-1]+1)
+        name_task = "{}-{}".format(job, indexes[job]+1)
 
-        machine_operations[machine -1].append((name_task, prcTime, start_cstr, start))
+        machine_operations[machine - 1].append((name_task, prcTime, start_cstr, start))
 
         # Updating indexes (one for the current task for each job, one for the start constraint
         # for each job)
-        indexes[job-1] += 1
-        start_task_cstr[job-1] += start + prcTime
+        indexes[job] += 1
+        start_task_cstr[job] += start + prcTime
 
     return machine_operations
 
