@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+import sys
+
 
 def split_ms(pb_instance, ms):
     jobs = []
@@ -14,7 +16,9 @@ def get_processing_time(op_by_machine, machine_nb):
     for op in op_by_machine:
         if op['machine'] == machine_nb:
             return op['processingTime']
-    return -1
+
+    print("[ERROR] Machine {} doesn't to be able to process this task.".format(machine_nb))
+    sys.exit(-1)
 
 
 def is_free(tab, start, duration):
@@ -25,20 +29,26 @@ def is_free(tab, start, duration):
 
 
 def find_first_available_place(start_ctr, duration, machine_jobs):
-    max_duration = duration + start_ctr
-    for job in machine_jobs:
-        max_duration += job[1]
+    max_duration_list = []
+    max_duration = start_ctr + duration
+
+    # max_duration is either the start_ctr + duration or the max(possible starts) + duration
+    if machine_jobs:
+        for job in machine_jobs:
+            max_duration_list.append(job[3] + job[1])  # start + process time
+
+        max_duration = max(max(max_duration_list), start_ctr) + duration
 
     machine_used = [True] * max_duration
 
     # Updating array with used places
     for job in machine_jobs:
-        start = job[2]
+        start = job[3]
         long = job[1]
         for k in range(start, start + long):
             machine_used[k] = False
 
-    # Find the first available place that meet constraint
+    # Find the first available place that meets constraint
     for k in range(start_ctr, len(machine_used)):
         if is_free(machine_used, k, duration):
             return k
@@ -48,7 +58,7 @@ def decode(pb_instance, os, ms):
     o = pb_instance['jobs']
     machine_operations = [[] for i in range(pb_instance['machinesNb'])]
 
-    ms_s = split_ms(pb_instance, ms) # machine for each operations
+    ms_s = split_ms(pb_instance, ms)  # machine for each operations
 
     indexes = [0] * len(ms_s)
     start_task_cstr = [0] * len(ms_s)
@@ -59,6 +69,7 @@ def decode(pb_instance, os, ms):
         machine = ms_s[job-1][indexes[job-1]]
         prcTime = get_processing_time(o[job - 1][indexes[job-1]], machine)
         start_cstr = start_task_cstr[job-1]
+
         # Getting the first available place for the operation
         start = find_first_available_place(start_cstr, prcTime, machine_operations[machine - 1])
         name_task = "{}-{}".format(job, indexes[job-1]+1)
@@ -85,19 +96,3 @@ def translate_decoded_to_gantt(machine_operations):
         data[machine_name] = operations
 
     return data
-
-
-def time_taken(pb_instance, os, ms):
-    decoded = decode(pb_instance, os, ms)
-
-    # Getting the max for each machine
-    max_per_machine = []
-    for machine in decoded:
-        max_d = 0
-        for job in machine:
-            end = job[3] + job[1]
-            if end > max_d:
-                max_d = end
-        max_per_machine.append(max_d)
-
-    return max(max_per_machine)
