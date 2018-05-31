@@ -4,20 +4,34 @@
 import random
 import config
 import itertools
+import decoding
 
-# TODO: Replace
-def timeTaken(x):
-    return 1
+
+def timeTaken(os_ms, pb_instance):
+    (os, ms) = os_ms
+    decoded = decoding.decode(pb_instance, os, ms)
+
+    # Getting the max for each machine
+    max_per_machine = []
+    for machine in decoded:
+        max_d = 0
+        for job in machine:
+            end = job[3] + job[1]
+            if end > max_d:
+                max_d = end
+        max_per_machine.append(max_d)
+
+    return max(max_per_machine)
 
 # 4.3.1 Selection
 #######################
 
-def elitistSelection(population):
+def elitistSelection(population, parameters):
     keptPopSize = int(config.pr * len(population))
-    sortedPop = sorted(population, key=timeTaken)
+    sortedPop = sorted(population, key=lambda cpl: timeTaken(cpl, parameters))
     return sortedPop[:keptPopSize]
 
-def tournamentSelection(population):
+def tournamentSelection(population, parameters):
     b = 2
 
     selectedIndividuals = []
@@ -25,12 +39,12 @@ def tournamentSelection(population):
         randomIndividual = random.randint(0, len(population) - 1)
         selectedIndividuals.append(population[randomIndividual])
 
-    return min(selectedIndividuals, key=timeTaken)
+    return min(selectedIndividuals, key=lambda cpl: timeTaken(cpl, parameters))
 
 def selection(population, parameters):
-    newPop = elitistSelection(population)
+    newPop = elitistSelection(population, parameters)
     while len(newPop) < len(population):
-        newPop.append(tournamentSelection(population))
+        newPop.append(tournamentSelection(population, parameters))
 
     return newPop
 
