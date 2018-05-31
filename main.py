@@ -5,10 +5,12 @@
 
 import parser
 import encoding
+import decoding
 import genetic
 import termination
 import sys
 import gantt
+import time
 
 # Beginning
 if len(sys.argv) != 2:
@@ -16,6 +18,8 @@ if len(sys.argv) != 2:
 else:
     # Parameters Setting
     parameters = parser.parse(sys.argv[1])
+
+    t0 = time.time()
 
     # Initialize the Population
     population = encoding.initializePopulation(parameters)
@@ -30,6 +34,13 @@ else:
 
         gen = gen + 1
 
-    # Termination Criteria Satisfied ?
+    sortedPop = sorted(population, key=lambda cpl: genetic.timeTaken(cpl, parameters))
 
+    t1 = time.time()
+    total_time = t1 - t0
+    print("Finished in {0:.2f}s".format(total_time))
+
+    # Termination Criteria Satisfied ?
+    gantt_data = decoding.translate_decoded_to_gantt(decoding.decode(parameters, sortedPop[0][0], sortedPop[0][1]))
+    gantt.draw_chart(gantt_data)
 
