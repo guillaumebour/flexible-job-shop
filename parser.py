@@ -5,7 +5,7 @@ def parse(path):
     file = open(path, 'r')
 
     firstLine = file.readline()
-    firstLineValues = list(map(int, firstLine.split()))
+    firstLineValues = list(map(int, firstLine.split()[0:2]))
 
     jobsNb = firstLineValues[0]
     machinesNb = firstLineValues[1]
