@@ -79,7 +79,7 @@ def decode(pb_instance, os, ms):
         # Updating indexes (one for the current task for each job, one for the start constraint
         # for each job)
         indexes[job] += 1
-        start_task_cstr[job] += start + prcTime
+        start_task_cstr[job] = (start + prcTime)
 
     return machine_operations
 
