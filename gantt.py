@@ -45,9 +45,11 @@ def draw_chart(data):
     ax = fig.add_subplot(111)
 
     index = 0
+    max_len = []
 
     for machine, operations in sorted(data.items()):
         for op in operations:
+            max_len.append(op[1])
             c = random.choice(colors)
             rect = ax.barh((index * 0.5) + 0.5, op[1] - op[0], left=op[0], height=0.3, align='center',
                            edgecolor=c, color=c, alpha=0.8)
@@ -67,7 +69,7 @@ def draw_chart(data):
 
     ax.set_ylim(ymin=-0.1, ymax=nb_row * 0.5 + 0.5)
     ax.grid(color='gray', linestyle=':')
-    ax.set_xlim(0, 10)
+    ax.set_xlim(0, max(10, max(max_len)))
 
     labelsx = ax.get_xticklabels()
     plt.setp(labelsx, rotation=0, fontsize=10)
@@ -83,6 +85,40 @@ def draw_chart(data):
     plt.title("Flexible Job Shop Solution")
     plt.savefig('gantt.svg')
     plt.show()
+
+
+def export_latex(data):
+    max_len = []
+    head = """
+\\noindent\\resizebox{{\\textwidth}}{{!}}{{
+\\begin{{tikzpicture}}[x=.5cm, y=1cm]
+\\begin{{ganttchart}}{{1}}{{{}}}
+[vgrid, hgrid]{{{}}}
+\\gantttitle{{Flexible Job Shop Solution}}{{{}}} \\\\
+\\gantttitlelist{{1,...,{}}}{{1}} \\\\
+"""
+    footer = """
+\\end{ganttchart}
+\\end{tikzpicture}}\n
+    """
+    body = ""
+    for machine, operations in sorted(data.items()):
+        counter = 0
+        for op in operations:
+            max_len.append(op[1])
+            label = "O$_{{{}}}$".format(op[2].replace('-', ''))
+            body += "\\Dganttbar{{{}}}{{{}}}{{{}}}{{{}}}".format(machine, label, op[0]+1, op[1])
+            if counter == (len(operations) - 1):
+                body += "\\\\ \n"
+            else:
+                body += "\n"
+            counter += 1
+
+    lenM = max(10, max(max_len))
+    print(head.format(lenM, lenM, lenM, lenM))
+    print(body)
+    print(footer)
+
 
 
 if __name__ == '__main__':

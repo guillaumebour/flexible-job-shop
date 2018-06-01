@@ -11,6 +11,7 @@ import termination
 import sys
 import gantt
 import time
+import config
 
 # Beginning
 if len(sys.argv) != 2:
@@ -42,5 +43,9 @@ else:
 
     # Termination Criteria Satisfied ?
     gantt_data = decoding.translate_decoded_to_gantt(decoding.decode(parameters, sortedPop[0][0], sortedPop[0][1]))
-    gantt.draw_chart(gantt_data)
+
+    if config.latex_export:
+        gantt.export_latex(gantt_data)
+    else:
+        gantt.draw_chart(gantt_data)
 
