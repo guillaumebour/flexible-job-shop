@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 from src.genetic import genetic, encoding
 
 # This script runs every non-trivial piece of code defined in this project to

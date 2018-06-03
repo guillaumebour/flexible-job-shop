@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 # This module creates a population of random OS and MS chromosomes
 
 import random
@@ -5,7 +7,6 @@ from src import config
 
 
 def generateOS(parameters):
-    machinesNb = parameters['machinesNb']
     jobs = parameters['jobs']
 
     OS = []
@@ -19,8 +20,8 @@ def generateOS(parameters):
 
     return OS
 
+
 def generateMS(parameters):
-    machinesNb = parameters['machinesNb']
     jobs = parameters['jobs']
 
     MS = []
@@ -30,6 +31,7 @@ def generateMS(parameters):
             MS.append(randomMachine)
 
     return MS
+
 
 def initializePopulation(parameters):
     gen1 = []

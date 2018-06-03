@@ -46,4 +46,3 @@ else:
         gantt.export_latex(gantt_data)
     else:
         gantt.draw_chart(gantt_data)
-

@@ -1,5 +1,8 @@
+#!/usr/bin/env python
+
 # This module parses .fjs files as found in the "Monaldo" FJSP dataset.
 # More explanations on this file format can be found in the dataset.
+
 
 def parse(path):
     file = open(path, 'r')
@@ -15,8 +18,6 @@ def parse(path):
     for i in range(jobsNb):
         currentLine = file.readline()
         currentLineValues = list(map(int, currentLine.split()))
-
-        operationsNb = currentLineValues[0]
 
         operations = []
 

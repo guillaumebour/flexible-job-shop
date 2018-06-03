@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 # This module contains the detailed implementation of every genetic operators
 # The code is strictly mirroring the section 4.3 of the attached paper
 
@@ -23,6 +25,7 @@ def timeTaken(os_ms, pb_instance):
 
     return max(max_per_machine)
 
+
 # 4.3.1 Selection
 #######################
 
@@ -30,6 +33,7 @@ def elitistSelection(population, parameters):
     keptPopSize = int(config.pr * len(population))
     sortedPop = sorted(population, key=lambda cpl: timeTaken(cpl, parameters))
     return sortedPop[:keptPopSize]
+
 
 def tournamentSelection(population, parameters):
     b = 2
@@ -41,12 +45,14 @@ def tournamentSelection(population, parameters):
 
     return min(selectedIndividuals, key=lambda cpl: timeTaken(cpl, parameters))
 
+
 def selection(population, parameters):
     newPop = elitistSelection(population, parameters)
     while len(newPop) < len(population):
         newPop.append(tournamentSelection(population, parameters))
 
     return newPop
+
 
 # 4.3.2 Crossover operators
 ###########################
@@ -58,7 +64,6 @@ def precedenceOperationCrossover(p1, p2, parameters):
     sizeJobset1 = random.randint(0, jobNumber)
 
     jobset1 = random.sample(jobsRange, sizeJobset1)
-    jobset2 = [item for item in jobsRange if item not in jobset1]
 
     o1 = []
     p1kept = []
@@ -89,6 +94,7 @@ def precedenceOperationCrossover(p1, p2, parameters):
             o2[i] = p1kept.pop(0)
 
     return (o1, o2)
+
 
 def jobBasedCrossover(p1, p2, parameters):
     J = parameters['jobs']
@@ -129,6 +135,7 @@ def jobBasedCrossover(p1, p2, parameters):
 
     return (o1, o2)
 
+
 def twoPointCrossover(p1, p2):
     pos1 = random.randint(0, len(p1) - 1)
     pos2 = random.randint(0, len(p1) - 1)
@@ -146,14 +153,17 @@ def twoPointCrossover(p1, p2):
 
     return (offspring1, offspring2)
 
+
 def crossoverOS(p1, p2, parameters):
     if random.choice([True, False]):
         return precedenceOperationCrossover(p1, p2, parameters)
     else:
         return jobBasedCrossover(p1, p2, parameters)
 
+
 def crossoverMS(p1, p2):
     return twoPointCrossover(p1, p2)
+
 
 def crossover(population, parameters):
     newPop = []
@@ -175,6 +185,7 @@ def crossover(population, parameters):
 
     return newPop
 
+
 # 4.3.3 Mutation operators
 ##########################
 
@@ -193,6 +204,7 @@ def swappingMutation(p):
           p[pos2+1:]
 
     return offspring
+
 
 def neighborhoodMutation(p):
     pos3 = pos2 = pos1 = random.randint(0, len(p) - 1)
@@ -222,6 +234,7 @@ def neighborhoodMutation(p):
 
     return offspring
 
+
 def halfMutation(p, parameters):
     o = p
     jobs = parameters['jobs']
@@ -235,11 +248,11 @@ def halfMutation(p, parameters):
     for job in jobs:
         for op in job:
             if i in positions:
-                randomMachine = random.randint(0, len(op)-1)
-                o[i] = randomMachine # op[randomMachine]['machine']
+                o[i] = random.randint(0, len(op)-1)
             i = i+1
 
     return o
+
 
 def mutationOS(p):
     if random.choice([True, False]):
@@ -247,8 +260,10 @@ def mutationOS(p):
     else:
         return neighborhoodMutation(p)
 
+
 def mutationMS(p, parameters):
     return halfMutation(p, parameters)
+
 
 def mutation(population, parameters):
     newPop = []

@@ -1,9 +1,14 @@
+#!/usr/bin/env python
+
+# This module helps creating Gantt from a dictionary or a text file.
+# Output formats are a Matplotlib chart or a LaTeX code (using pgfgantt).
+
 import random
+import numpy as np
 
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as font_manager
 from matplotlib import colors as mcolors
-import numpy as np
 
 colors = []
 
@@ -118,7 +123,6 @@ def export_latex(data):
     print(head.format(lenM, lenM, lenM, lenM))
     print(body)
     print(footer)
-
 
 
 if __name__ == '__main__':
