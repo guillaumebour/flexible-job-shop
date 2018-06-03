@@ -1,7 +1,8 @@
 # This module creates a population of random OS and MS chromosomes
 
-import config
 import random
+from src import config
+
 
 def generateOS(parameters):
     machinesNb = parameters['machinesNb']

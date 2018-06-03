@@ -2,9 +2,9 @@
 # The code is strictly mirroring the section 4.3 of the attached paper
 
 import random
-import config
 import itertools
-import decoding
+from src import config
+from src.genetic import decoding
 
 
 def timeTaken(os_ms, pb_instance):

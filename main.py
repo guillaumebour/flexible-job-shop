@@ -3,15 +3,13 @@
 # This script contains a high level overview of the proposed hybrid algorithm
 # The code is strictly mirroring the section 4.1 of the attached paper
 
-import parser
-import encoding
-import decoding
-import genetic
-import termination
 import sys
-import gantt
 import time
-import config
+
+from src.utils import parser, gantt
+from src.genetic import encoding, decoding, genetic, termination
+from src import config
+
 
 # Beginning
 if len(sys.argv) != 2:
